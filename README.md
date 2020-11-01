@@ -1,5 +1,7 @@
 # Serial-Communication-SoC
-SoC using the Microblaze MCS designed for using different serial communication methods. The SoC contains a UART core, a SPI core, and an I2C core.
+- SoC using the Microblaze MCS designed for using different serial communication methods. The SoC contains a UART core, a SPI core, and an I2C core
+- The SoC has 64 slots available for cores
+- Each core contains 32 32-bit registers
 
 # Directory Structure
 <pre>
@@ -60,10 +62,20 @@ SoC using the Microblaze MCS designed for using different serial communication m
         └── io_rw.h
 </pre>
 
+# System
+- The soc_top.sv file instantiates and connects the Microblaze MCS, the system bridge, and the MMIO unit
+- The sys_bridge.sv file handles the communication between the Microblaze MCS and the MMIO unit
+    - The Microblaze MCS sends a 32-bit address to the system bridge. Bits 24-31 are used to determine if the address contains correct bridge base address. Bit 23 is used as the chip select signal for the MMIO subsystem (it should be 0). Bits 2-22 are used as the 21-bit address sent to the MMIO system. 
+    - The read and write signals, as well as the read and write data, are passed directly through the bridge
+- The io_map.svh file contains the mapping for the slots in the MMIO system.
+
 # MMIO
-- The memory mapped I/O system (MMIO) contains all the cores as well as a controller. 
+- The memory mapped I/O system (MMIO) contains all the cores as well as a controller 
+- The register address is contained in bits 0 to 4
+- The slot address is contained in bits 5 to 10
 ## MMIO Controller
-- 
+- The MMIO controller handles the communication between the system bus and the MMIO cores. 
+- The controller takes the 21-bit address from the system bus and decodes it into the slot address and the register address.
 
 Explain directory structure.
 Explain hierarchy of system 
