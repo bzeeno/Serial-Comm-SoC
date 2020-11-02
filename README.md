@@ -72,7 +72,7 @@
 
 </pre>
 
-# System
+# Hardware
 ![](Diagrams/soc_top.jpg)
 
 - The soc_top.sv file instantiates and connects the Microblaze MCS, the system bridge, and the MMIO unit
@@ -81,7 +81,7 @@
     - The read and write signals, as well as the read and write data, are passed directly through the bridge
 - The io_map.svh file contains the mapping for the slots in the MMIO system.
 
-# MMIO
+## MMIO
 ![](Diagrams/mmio.jpg)
 - The memory mapped I/O system (MMIO) contains all the cores as well as a controller 
 - The register address is contained in bits 0 to 4
@@ -90,12 +90,8 @@
     - The MMIO controller handles the communication between the system bus and the MMIO cores. 
     - The controller takes the 21-bit address from the system bus and decodes it into the slot address and the register address.
 
-## Timer Core
+### Timer Core
 - A core for controlling timing
-- Processor Interaction:
-	- read 48-bit counter value
-	- write the "go" signal to pause or resume counting
-	- clear counter
 - Register Map:
 	- offset 0 (Read register):
 		-  bits[31:0]: lower word of counter
@@ -105,35 +101,44 @@
 		- bit 0: go signal
 		- bit 1: clear signal
 
-## GPI Core
+### GPI Core
 - A general purpose input that receives the input from the switches on the FPGA
 
-## GPO Core
+### GPO Core
 - A general purpose output that transmits data to the leds on the FPGA
 
-## UART
+### UART
 ![](Diagrams/uart.jpg)
 ![](Diagrams/uart_rx.jpg)
-![](Diagrams/uart_tx.jpg)
-- Processor interaction:
-	- Read 8-bit data
-	- Write 11-bit divisor value
-	- Write 8-bit data
+![](Diagrams/tx_uart.jpg)
 - Register Map:
 	- offset 0 (Read register):
-		- bits \[7:0]: read data (received bits)
+		- bits[7:0]: read data (received bits)
 		- bit 8: empty signal from fifo_rx
 		- bit 9: full signal from fifo_tx
-		- bits \[31:10]: Unused (set to 0)
 	- offset 1 (Write register):
-		- bits\[10:0]: Divisor value
-		- bits\[31:11]: unused
+		- bits[10:0]: Divisor value
 	- offset 2 (Write register):
-		- bits\[7:0]: write data (bits to be transmitted)
-		- bits\[31:8]: unused
+		- bits[7:0]: write data (bits to be transmitted)
 
-## I2C Core
-- Master I2C core
+### SPI Core
+![](Diagrams/spi.jpg)
+- Register Map:
+	- offset 0 (Read register):
+		- bits[7:0]: Received data byte
+		- bit[8]: ready signal from controller
+	- offset 1 (Write register):
+		- bits[S-1:0]: Slave select signal
+	- offset 2 (Write register):
+		- bits[15:0] divisor value
+		- bit[16]: cpol
+		- bit[17]: cpha
+	- offset 3 (Write register):
+		- bits[7:0]: Transmit data
+
+### I2C Core
+![](Diagrams/i2c_fsm.jpg)
+![](Diagrams/i2c_timing.jpg)
 - Register Map:
     - Offset 0 (Read Register):
         - bit[0]: rx acknowledge bit
@@ -144,5 +149,28 @@
 	- offset 2 (Write register):
 		- bit[7:0]: tx_data
 		- bits[10:8]: command
-Explain hierarchy of system 
-Go down the hierarchy explaining everything (soc_top, system bridge, mmio unit, the timer core, the gpo core, the gpi core, the uart core, the spi core, the i2c core) 
+
+# Software
+- Each core has a driver written in C++. The header file contains the register map, the method prototypes, and masks (when necessary)
+- The .cpp files contain the methods for each driver
+## Applications
+- Main.cpp contains the instantiation of the drivers in addition to the functions that act as applications
+## System Files
+- init.h instantiates the timer and uart cores. In addition, init.h contains the prototypes for timing control methods and debug methods. Finally, it includes bit manipulation macros
+- init.cpp contains the full code for the timing and debug methods
+- io_map.h contains definitions for the system clock frequency as well as the bridge base address. The slot positions are also defined in io_map.h
+- io_rw.h contains macros for reading data, writing data, and retrieving the base slot address of any given core.
+## Drivers
+### GPIO
+- The drivers for both the gpo and gpi cores are contained in the same files (gpio.h and gpio.cpp)
+- The gpo core allows for writing one word or one bit
+- The gpi core allows for reading one word or one bit
+
+### UART
+- Contains methods for setting baud rate, getting the status of the FIFO buffers, transmitting and receiving bytes, and display methods
+
+### SPI
+- Contains methods for setting the frequency, writing the slave select signal, setting the mode, writing to the control register (which contains the phase, polarity, and divisor), and a method for initiating the transfer
+
+### I2C
+- Contains methods for setting the frequency, setting the state (start, restart, stop), getting the ready status, and methods for transmitting and receiving bytes
