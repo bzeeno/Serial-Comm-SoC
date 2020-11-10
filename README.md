@@ -3,6 +3,27 @@
 - The SoC has 64 slots available for cores
 - Each core contains 32 32-bit registers
 
+Table of Contents
+=================
+
+   * [Directory Structure](#directory-structure)
+   * [Hardware](#hardware)
+      * [MMIO](#mmio)
+         * [Timer Core](#timer-core)
+         * [GPI Core](#gpi-core)
+         * [GPO Core](#gpo-core)
+         * [UART](#uart)
+         * [SPI Core](#spi-core)
+         * [I2C Core](#i2c-core)
+   * [Software](#software)
+      * [System Files](#system-files)
+      * [Drivers](#drivers)
+         * [GPIO](#gpio)
+         * [UART](#uart-1)
+         * [SPI](#spi)
+         * [I2C](#i2c)
+      * [Applications](#applications)
+
 # Directory Structure
 <pre>
 ├── Diagrams
