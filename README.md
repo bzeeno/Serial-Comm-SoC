@@ -197,11 +197,12 @@ Table of Contents
 
 ## Applications
 - Main.cpp contains the instantiation of the drivers in addition to the functions that act as applications
-- The chasing_led function uses the GPI core to read the values of the 5 leftmost switches and the GPO core to light the 8 leftmost LEDs. The LEDs light up in successive order to look like a continuous movement.
+- Note: It is best to run the chasing_led application alone since the other applications will have to wait for it to finish before they can run. The applications are ran by themselves in the demonstration videos.
+- The chasing_led function uses the GPI core to read the values of the 5 leftmost switches and the GPO core to light the 8 leftmost LEDs. The LEDs light up in successive order to look like a continuous movement (https://youtu.be/ik9HXQ80F9U).
 	- Switches 10-15 are used for this application
 		- Switch 10 (rightmost) is used to determine the direction of the chasing LEDs. If the switch is 0, the direction is left, if it is 1, the direction is right
 		- Switches 11-15 are used to control the speed of the chassing LEDs. These switches represent a binary number, and they are converted to decimal. Once they are converted, they are used in an equation (sleep_time = -8*sw_val + 400), where the sleep time decreases as the switch value increases, which means that as the switch value increases, so too does the speed of the chasing LEDs. The sleep time's range is between 150 and 400 ms. 
-- The gsensor_check function uses the spi core to obtain acceleration data from the on-board ADXL362 accelerometer. The 4 rightmost LEDs will light up depending on the inclination of the accelerometer (and thus the FPGA). 
+- The gsensor_check function uses the spi core to obtain acceleration data from the on-board ADXL362 accelerometer. The 4 rightmost LEDs will light up depending on the inclination of the accelerometer (and thus the FPGA) (https://youtu.be/ACBonyk_XFU). 
 	- The LEDs light up at intervals of 90 degrees.
 	- Degree to LED conversion:
 		- The 0th LED (rightmost) signifies 0 degrees, which is when the fpga is laying flat in its natural position.
@@ -210,6 +211,6 @@ Table of Contents
 		- The 3rd LED signifies 270 degrees
 	- Rotoating the FPGA clockwise to 90 degrees will light the 1st LED, rotating again will light the 2nd led, signifying 180 degrees, and rotating it once more will light the 3rd LED (rightmost), signifying 270 degrees.
 	- If, instead, we rotate the fpga so that the top of the FPGA is facing us, the 1st LED will light up, signifying 90 degrees, rotating another 90 degrees in the same direction will light the 2nd LED, and once more will light the 3rd LED
-- The get_temp function uses the I2C core to communicate with the on-board ADT7420 temperature sensor. The function gets the id first, then it initiates a read transaction by transmitting the device address, then transmitting the register address. The master then initiates a restart condition and receives the data from the specified register. The most significant byte is held in register 0x00 and the least significant byte is held in register 0x01 (Note: We use 13-bit data rather than 16-bit)
+- The get_temp function uses the I2C core to communicate with the on-board ADT7420 temperature sensor. The function gets the id first, then it initiates a read transaction by transmitting the device address, then transmitting the register address. The master then initiates a restart condition and receives the data from the specified register. The most significant byte is held in register 0x00 and the least significant byte is held in register 0x01 (Note: We use 13-bit data rather than 16-bit) (https://youtu.be/B8BCKapNoZI).
 	- The raw temperature data is converted to celsius according to the ADT7420's datasheet. 
 	- The UART core is used to display the id of the device as well as the temperature on the computer 
