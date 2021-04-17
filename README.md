@@ -94,7 +94,7 @@ Table of Contents
 </pre>
 
 # Hardware
-![](Diagrams/soc.jpg)
+![](Diagrams/SoC.jpg)
 
 - The soc_top.sv file instantiates and connects the Microblaze MCS, the system bridge, and the MMIO unit
 - The sys_bridge.sv file handles the communication between the Microblaze MCS and the MMIO unit
