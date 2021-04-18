@@ -129,7 +129,7 @@ Table of Contents
 - A general purpose output that transmits data to the leds on the FPGA
 
 ### UART
-![](Diagrams/uart.jpg)
+![](Diagrams/Uart.jpg)
 ![](Diagrams/uart_rx.jpg)
 ![](Diagrams/tx_uart.jpg)
 - Register Map:
