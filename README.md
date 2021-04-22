@@ -131,7 +131,7 @@ Table of Contents
 ### UART
 ![](Diagrams/Uart.jpg)
 ![](Diagrams/uart_rx.jpg)
-![](Diagrams/tx_uart.jpg)
+![](Diagrams/uart_tx.jpg)
 - Register Map:
 	- offset 0 (Read register):
 		- bits[7:0]: read data (received bits)
