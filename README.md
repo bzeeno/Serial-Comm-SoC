@@ -143,7 +143,7 @@ Table of Contents
 		- bits[7:0]: write data (bits to be transmitted)
 
 ### SPI Core
-![](Diagrams/spi.jpg)
+![](Diagrams/SPI.jpg)
 - Register Map:
 	- offset 0 (Read register):
 		- bits[7:0]: Received data byte
@@ -158,7 +158,7 @@ Table of Contents
 		- bits[7:0]: Transmit data
 
 ### I2C Core
-![](Diagrams/i2c_fsm.jpg)
+![](Diagrams/I2C.jpg)
 ![](Diagrams/i2c_timing.jpg)
 - Register Map:
     - Offset 0 (Read Register):
