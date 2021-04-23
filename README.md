@@ -159,7 +159,7 @@ Table of Contents
 
 ### I2C Core
 ![](Diagrams/I2C.jpg)
-![](Diagrams/i2c_timing.jpg)
+![](Diagrams/i2c_wave.jpg)
 - Register Map:
     - Offset 0 (Read Register):
         - bit[0]: rx acknowledge bit
